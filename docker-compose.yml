@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  nodeService:
+    image: node:20-alpine
+    container_name: node
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 3000:3000
+    command: >
+      sh -c "
+      npm install &&
+      npm start
+      "
+    depends_on:
+      - db
+    networks:
+      - sequelize
+  
+  db:
+    image: mysql:8
+    container_name: mysql
+    environment:    
+      - MYSQL_DATABASE=sequelize
+      - MYSQL_PASSWORD=root  
+      - MYSQL_ROOT_PASSWORD=root
+      
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - sequelize
+
+networks:
+  sequelize:
+    driver: bridge
