@@ -17,7 +17,8 @@ const homeControlador = require('../controladores/homeControlador');
  * Define a rota principal (`/`) que responde às requisições GET.
  * A lógica para processar a requisição e enviar a resposta é delegada ao `homeControlador`.
  */
-rota.get('/', homeControlador);
+rota.get('/',homeControlador.getHome);
+
 
 // Exporta o objeto de rotas configurado para ser utilizado na aplicação principal.
 module.exports = rota;
